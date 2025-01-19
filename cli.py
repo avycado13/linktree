@@ -20,3 +20,7 @@ def add():
 def add_link(url, tags):
     db.insert_link_with_tags(url, list(tags))  # Convert tuple to list
     click.echo("Added link with tags!")
+
+
+if __name__ == "__main__":
+    cli()

@@ -1,0 +1,63 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Header styles */
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0.5em 0;
+    color: #222;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Navigation list */
+ul {
+    list-style-type: none;
+    margin: 20px;
+    padding: 0;
+}
+
+li {
+    margin: 10px 0;
+}
+
+/* Search container */
+#search {
+    margin: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Media queries */
+@media (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+
+    #search {
+        margin: 10px;
+    }
+
+    ul {
+        margin: 10px;
+    }
+}
