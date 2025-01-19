@@ -3,7 +3,7 @@
 build:
 	uv run cli.py bulkadd links.txt
 	uv run build.py
-	uv run pagefind --site dist
+	npx pagefind --site dist
 serve:
 	uv run python -m http.server 8080 --directory dist
 format:
