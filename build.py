@@ -22,7 +22,8 @@ tag_index_template = env.get_template("tag_index_template.html")
 
 logging.debug("Loading config file")
 config = toml.load(Path("linktagger.toml"))
-
+if config["search"]["enabled"]:
+    search_enabled=config["search"]["enabled"]
 if config["db"]["url"]:
     db = Database(config["db"]["url"])
 else:
@@ -62,7 +63,7 @@ for link in links:
 
 
 logging.info("Writing Link page")
-link_page_content = link_template.render(links=link_snippets)
+link_page_content = link_template.render(links=link_snippets,search_enabled=search_enabled)
 links_path = os.path.join(
     output_directory,
     config["user"]["links_path"] if config["user"]["links_path"] else "index.html",
@@ -83,7 +84,7 @@ for tag in tags:
     logging.debug(f"Links for tag {tag}: {tag_links}")
 
     # Render the tag template using Jinja
-    tag_page_content = tag_template.render(tag=tag, links=tag_links)
+    tag_page_content = tag_template.render(tag=tag, links=tag_links,search_enabled=search_enabled)
     tag_path = os.path.join(output_directory, "tags", tag)
     os.makedirs(tag_path, exist_ok=True)
     print(tag_path)
@@ -92,7 +93,7 @@ for tag in tags:
         f.write(tag_page_content)
         logging.info(f"HTML page for tag {tag} written successfully.")
 
-tag_index_content = tag_index_template.render(tags=tags)
+tag_index_content = tag_index_template.render(tags=tags,search_enabled=search_enabled)
 with open(os.path.join(output_directory, "tags", "index.html"), "w") as f:
     f.write(tag_index_content)
     logging.info("HTML page for tag index written successfully.")

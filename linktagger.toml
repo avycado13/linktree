@@ -4,3 +4,6 @@ links_path = "index.html"
 
 [db]
 url = "sqlite:///links.db"
+
+[search]
+enabled = false

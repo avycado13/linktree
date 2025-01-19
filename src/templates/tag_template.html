@@ -6,7 +6,9 @@
     </head>
     <body>
         {% import "macros.html" as macros %}
-        {{ macros.navsearch() }}
+        {% if search_enabled %}
+            {{ macros.search() }}
+        {% endif %}
         <h1 data-pagefind-filter="tag">{{ tag }}</h1>
         <ul>
         {% for link in links %}
