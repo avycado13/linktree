@@ -1,4 +1,4 @@
-.PHONY: build serve format lock
+.PHONY: format build lock serve
 
 build:
 	uv run cli.py bulkadd links.txt

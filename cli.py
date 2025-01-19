@@ -1,6 +1,7 @@
 import click
 from db import Database
 import toml
+from trogon import tui
 
 # Load configuration
 config = toml.load("linktagger.toml")
@@ -11,9 +12,12 @@ if config["db"]["url"]:
 else:
     db = Database()
 
+
+@tui()
 @click.group()
 def cli():
     pass
+
 
 @cli.command("add")
 @click.argument("url")
@@ -23,6 +27,7 @@ def add_link(url, tags):
     db.insert_link_with_tags(url, list(tags))  # Convert tuple to list
     click.echo("Added link with tags!")
 
+
 @cli.command("links")
 def get_links():
     """Get all links in the database."""
@@ -30,12 +35,14 @@ def get_links():
     for link in db.get_links():
         click.echo(link)
 
+
 @cli.command("tags")
 def get_tags():
     """Get all tags in the database."""
     click.echo("Tags in db")
     for tag in db.get_tags():
         click.echo(tag)
+
 
 @cli.command("strip")
 @click.argument("file_path")
@@ -54,13 +61,14 @@ def parse_and_remove(file_path: str):
             outfile.write(modified_line)
     click.echo("Done!")
 
+
 @cli.command("bulkadd")
 @click.argument("file_path")
 def bulk_add_links(file_path: str):
     """Bulk add links from a file, assuming format: 'url <tag1> <tag2> ...'"""
     with open(file_path, "r") as infile:
         lines = infile.readlines()
-    
+
     for line in lines:
         # Split the line into URL and tags
         parts = line.split()
@@ -69,6 +77,7 @@ def bulk_add_links(file_path: str):
             tags = parts[1:]  # Remaining parts are tags
             db.insert_link_with_tags(url, tags)  # Directly insert into the database
     click.echo("Done!")
+
 
 if __name__ == "__main__":
     cli()
