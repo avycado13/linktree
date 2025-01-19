@@ -20,11 +20,14 @@ tag_template = env.get_template("tag_template.html")
 link_template = env.get_template("link_page_template.html")
 tag_index_template = env.get_template("tag_index_template.html")
 
-db = Database()
-
-
-logging.debug("Loading config filec")
+logging.debug("Loading config file")
 config = toml.load(Path("linktagger.toml"))
+
+if config["db"]["url"]:
+    db = Database(config["db"]["url"])
+else:
+    db = Database()
+
 
 output_directory = Path(
     config["user"]["output_dir"] if config["user"]["output_dir"] else "dist/"

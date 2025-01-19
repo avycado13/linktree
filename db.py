@@ -34,7 +34,6 @@ class Database:
 
     def insert_link_with_tags(self, url: str, tag_names: list[str]):
         with Session(self.engine) as session:
-            # Check if link already exists
             existing_link = session.query(Link).filter_by(url=url).first()
             if existing_link:
                 link = existing_link
@@ -42,7 +41,6 @@ class Database:
                 link = Link(url=url)
                 session.add(link)
 
-            # Process tags
             for tag_name in tag_names:
                 tag = session.query(Tag).filter_by(name=tag_name).first()
                 if not tag:
@@ -57,15 +55,28 @@ class Database:
                 session.rollback()
                 raise ValueError(f"URL '{url}' already exists in database")
 
+    def remove_link(self, url: str):
+        with Session(self.engine) as session:
+            link = session.query(Link).filter_by(url=url).first()
+            if not link:
+                raise ValueError(f"URL '{url}' does not exist in the database")
+            session.delete(link)
+            session.commit()
+
+    def remove_tags(self, url: str, tag_names: list[str]):
+        with Session(self.engine) as session:
+            link = session.query(Link).filter_by(url=url).first()
+            if not link:
+                raise ValueError(f"URL '{url}' does not exist in the database")
+
+            for tag_name in tag_names:
+                tag = session.query(Tag).filter_by(name=tag_name).first()
+                if tag and tag in link.tags:
+                    link.tags.remove(tag)
+
+            session.commit()
+
     def get_links_by_tag(self, tag_name: str) -> list[str]:
-        """Get all links associated with a given tag.
-
-        Args:
-            tag_name: Name of the tag to search for
-
-        Returns:
-            List of URLs associated with the tag
-        """
         with Session(self.engine) as session:
             tag = session.query(Tag).filter_by(name=tag_name).first()
             if not tag:
@@ -73,34 +84,16 @@ class Database:
             return [link.url for link in tag.links]
 
     def get_tags(self) -> list[str]:
-        """Get all tags in the database.
-
-        Returns:
-            List of tag names, sorted alphabetically
-        """
         with Session(self.engine) as session:
             tags = session.query(Tag).all()
             return sorted(tag.name for tag in tags)
 
     def get_links(self) -> list[str]:
-        """Get all links in the database.
-
-        Returns:
-            List of URLs, sorted alphabetically
-        """
         with Session(self.engine) as session:
             links = session.query(Link).all()
             return sorted(link.url for link in links)
 
     def get_tags_by_link(self, url: str) -> list[str]:
-        """Get all tags associated with a given URL.
-
-        Args:
-            url: URL to search for
-
-        Returns:
-            List of tag names associated with the URL, sorted alphabetically
-        """
         with Session(self.engine) as session:
             link = session.query(Link).filter_by(url=url).first()
             if not link:
@@ -109,12 +102,9 @@ class Database:
 
 
 # Example usage
-if __name__ == "__main__":
-    db = Database()
-    db.insert_link_with_tags("https://example.com", ["tag1", "tag2", "tag3"])
-    db.insert_link_with_tags("https://example2.com", ["tag2", "tag4"])
-
-    links_with_tag2 = db.get_links_by_tag("tag")
-    print("Links with tag2:", links_with_tag2)
-    print(db.get_tags())
-    print(db.get_links())
+# if __name__ == "__main__":
+#     db = Database()
+#     db.insert_link_with_tags("https://example.com", ["tag1", "tag2", "tag3"])
+#     db.remove_tags("https://example.com", ["tag2"])
+#     print(db.get_tags_by_link("https://example.com"))
+#     db.remove_link("https://example.com")

@@ -1,3 +1,6 @@
 [user]
 output_dir = "dist/"
 links_path = "index.html"
+
+[db]
+url = "sqlite:///links.db"

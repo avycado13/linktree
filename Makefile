@@ -1,6 +1,7 @@
 .PHONY: build serve format lock
 
 build:
+	uv run cli.py bulkadd links.txt
 	uv run build.py
 	uv run pagefind --site dist
 serve:
