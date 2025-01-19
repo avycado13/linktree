@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tags</title>
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    <body>
+        {% import "macros.html" as macros %}
+        {{ macros.navsearch() }}
+        {% if tags %}
+            <ul>
+                {% for tag in tags %}
+                    <li data-pagefind-filter="tag"><a href="/tags/{{ tag }}">{{ tag }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No links available.</p>
+        {% endif %}
+    </body>
+</html>

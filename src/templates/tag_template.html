@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Links - {{ tag }}</title>
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    <body>
+        {% import "macros.html" as macros %}
+        {{ macros.navsearch() }}
+        <h1 data-pagefind-filter="tag">{{ tag }}</h1>
+        <ul>
+        {% for link in links %}
+            <li><a href="{{ link }}" data-pagefind-filter="link">{{ link }}</a></li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>

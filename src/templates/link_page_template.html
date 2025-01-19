@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Links</title>
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    <body>
+        {% import "macros.html" as macros %}
+        {{ macros.navsearch() }}
+        {% if links %}
+            <ul>
+                {% for link in links %}
+                <li>{{link}}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No links available.</p>
+        {% endif %}
+    </body>
+</html>
