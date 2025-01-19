@@ -109,12 +109,12 @@ class Database:
 
 
 # Example usage
-if __name__ == "__main__":
-    db = Database()
-    db.insert_link_with_tags("https://example.com", ["tag1", "tag2", "tag3"])
-    db.insert_link_with_tags("https://example2.com", ["tag2", "tag4"])
+# if __name__ == "__main__":
+#     db = Database()
+#     db.insert_link_with_tags("https://example.com", ["tag1", "tag2", "tag3"])
+#     db.insert_link_with_tags("https://example2.com", ["tag2", "tag4"])
 
-    links_with_tag2 = db.get_links_by_tag("tag")
-    print("Links with tag2:", links_with_tag2)
-    print(db.get_tags())
-    print(db.get_links())
+#     links_with_tag2 = db.get_links_by_tag("tag")
+#     print("Links with tag2:", links_with_tag2)
+#     print(db.get_tags())
+#     print(db.get_links())
