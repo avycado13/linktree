@@ -66,6 +66,7 @@ dependencies = [
     { name = "click" },
     { name = "jinja2" },
     { name = "pagefind", extra = ["extended"] },
+    { name = "pagefind-bin" },
     { name = "sqlalchemy" },
     { name = "toml" },
 ]
@@ -82,6 +83,7 @@ requires-dist = [
     { name = "click", specifier = ">=8.1.8" },
     { name = "jinja2", specifier = ">=3.1.5" },
     { name = "pagefind", extras = ["extended"], specifier = ">=1.3.0" },
+    { name = "pagefind-bin", specifier = ">=1.3.0" },
     { name = "sqlalchemy", specifier = ">=2.0.37" },
     { name = "toml", specifier = ">=0.10.2" },
 ]
@@ -133,6 +135,17 @@ wheels = [
 [package.optional-dependencies]
 extended = [
     { name = "pagefind-bin-extended" },
+]
+
+[[package]]
+name = "pagefind-bin"
+version = "1.3.0"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/08/b5d6e556ea15bcad3b0fff0cbb1243893a5a38dea5822a014cb7f5c702d8/pagefind_bin-1.3.0-py3-none-macosx_12_0_arm64.whl", hash = "sha256:3daed395cecc5cb2750c3bb4ed0427616017ad84f9ad1d5227e27d31bbdc8ccf", size = 10271255 },
+    { url = "https://files.pythonhosted.org/packages/7f/38/9dc33f6bdb640eaab2b85194e627ee3070dee18365f88dfb187fe5572b6d/pagefind_bin-1.3.0-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.musllinux_1_1_x86_64.whl", hash = "sha256:484c42e4c9b40a3d60e1058d0af8983697876f4e4c6de04c7a3b64bb7bb27b20", size = 10787442 },
+    { url = "https://files.pythonhosted.org/packages/eb/48/1570b80dce613acc27c33bfe04a39908d6d5f03fa168d563f42cc6ef6053/pagefind_bin-1.3.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.musllinux_1_1_aarch64.whl", hash = "sha256:8b6a33f22fb2a2c69f10c79808f2b05689493f9e39047b4b6f4512313fa4191d", size = 10546755 },
+    { url = "https://files.pythonhosted.org/packages/d6/99/dd5df044cd9dbd2f73c457b1029cedab3e6901a870f7151f0982bdb81a38/pagefind_bin-1.3.0-py3-none-win_amd64.whl", hash = "sha256:daff63ee03d4efe5666f3aa9cbf904358a82d9dd1b2f5628450bb72e7968377c", size = 10060363 },
 ]
 
 [[package]]
