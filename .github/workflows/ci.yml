@@ -2,6 +2,11 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose an environment to deploy to: <dev|staging|prod>"
+        required: true
+        default: "dev"
   push:
     branches: main
 
@@ -29,5 +34,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=linktree
+          command: pages deploy dist --project-name=linktree --env ${{ github.event.inputs.environment }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }} 
