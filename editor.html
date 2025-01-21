@@ -1,0 +1,159 @@
+.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link & Tag Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .link-item, .tag-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        .delete-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .tag {
+            background: #e0e0e0;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Link & Tag Editor</h1>
+    
+    <div class="form-group">
+        <h2>Add New Link</h2>
+        <input type="url" id="linkUrl" placeholder="URL" required>
+        <input type="text" id="linkTitle" placeholder="Title" required>
+        <input type="text" id="linkTags" placeholder="Tags (comma separated)">
+        <button onclick="addLink()">Add Link</button>
+    </div>
+
+    <div id="linksList">
+        <h2>Links</h2>
+        <!-- Links will be inserted here -->
+    </div>
+
+    <div id="tagsList">
+        <h2>All Tags</h2>
+        <!-- Tags will be inserted here -->
+    </div>
+
+    <script>
+        // Data structure
+        let links = JSON.parse(localStorage.getItem('links')) || [];
+        let tags = new Set();
+
+        function updateTags() {
+            tags.clear();
+            links.forEach(link => {
+                link.tags.forEach(tag => tags.add(tag));
+            });
+            renderTags();
+            localStorage.setItem('links', JSON.stringify(links));
+        }
+
+        function addLink() {
+            const url = document.getElementById('linkUrl').value;
+            const title = document.getElementById('linkTitle').value;
+            const tagsInput = document.getElementById('linkTags').value;
+            
+            if (!url || !title) return;
+            
+            const linkTags = tagsInput.split(',')
+                .map(tag => tag.trim())
+                .filter(tag => tag.length > 0);
+
+            links.push({ url, title, tags: linkTags });
+            
+            document.getElementById('linkUrl').value = '';
+            document.getElementById('linkTitle').value = '';
+            document.getElementById('linkTags').value = '';
+            
+            updateTags();
+            renderLinks();
+        }
+
+        function deleteLink(index) {
+            links.splice(index, 1);
+            updateTags();
+            renderLinks();
+        }
+
+        function deleteTag(tag) {
+            links = links.map(link => ({
+                ...link,
+                tags: link.tags.filter(t => t !== tag)
+            }));
+            updateTags();
+            renderLinks();
+        }
+
+        function renderLinks() {
+            const linksList = document.getElementById('linksList');
+            linksList.innerHTML = '<h2>Links</h2>';
+            
+            links.forEach((link, index) => {
+                const div = document.createElement('div');
+                div.className = 'link-item';
+                div.innerHTML = `
+                    <div>
+                        <a href="${link.url}" target="_blank">${link.title}</a>
+                        <div class="tags">
+                            ${link.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteLink(${index})">Delete</button>
+                `;
+                linksList.appendChild(div);
+            });
+        }
+
+        function renderTags() {
+            const tagsList = document.getElementById('tagsList');
+            tagsList.innerHTML = '<h2>All Tags</h2>';
+            
+            Array.from(tags).forEach(tag => {
+                const div = document.createElement('div');
+                div.className = 'tag-item';
+                div.innerHTML = `
+                    <span>${tag}</span>
+                    <button class="delete-btn" onclick="deleteTag('${tag}')">Delete</button>
+                `;
+                tagsList.appendChild(div);
+            });
+        }
+
+        // Initial render
+        renderLinks();
+        updateTags();
+    </script>
+</body>
+</html>

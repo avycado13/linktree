@@ -6,7 +6,9 @@
     </head>
     <body>
         {% import "macros.html" as macros %}
-        {{ macros.search() }}
+        {% if search_enabled %}
+            {{ macros.search() }}
+        {% endif %}
         {% if tags %}
             <ul>
                 {% for tag in tags %}

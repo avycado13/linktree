@@ -8,3 +8,18 @@
         });
     </script>
 {% endmacro %}
+
+{% macro nav(tags) %}
+    <nav class="navbar">
+            <a href="/">Home</a>
+            <div class="dropdown">
+                <button class="dropbtn">Dropdown
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    {% for tag in tags %}
+                        <a href="/{{ tag }}">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+    </nav>
+{% endmacro %}

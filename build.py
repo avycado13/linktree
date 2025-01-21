@@ -41,6 +41,9 @@ shutil.copytree("src/static/", output_directory)
 logging.info("Fetching all links from the database...")
 links = db.get_links()
 logging.info(f"Fetched {len(links)} links.")
+logging.info("Fetching all tags from the database...")
+tags = db.get_tags()
+logging.info(f"Fetched {len(tags)} tags.")
 
 link_snippets: list[str] = []
 for link in links:
@@ -52,7 +55,7 @@ for link in links:
     )
     link_snippet = f"""
     <div class="link">
-        <a href={link}><p>{link}</p></a>
+        <a href="{link}"><p>{link}</p></a>
         <ul>
 {tag_list}
         </ul>
@@ -63,7 +66,7 @@ for link in links:
 
 logging.info("Writing Link page")
 link_page_content = link_template.render(
-    links=link_snippets, search_enabled=search_enabled
+    links=link_snippets, search_enabled=search_enabled, tags=tags
 )
 links_path = os.path.join(
     output_directory,
@@ -72,9 +75,6 @@ links_path = os.path.join(
 with open(links_path, "w") as f:
     f.write(link_page_content)
 
-logging.info("Fetching all tags from the database...")
-tags = db.get_tags()
-logging.info(f"Fetched {len(tags)} tags.")
 
 if not os.path.exists(os.path.join(output_directory, "tags")):
     os.makedirs(os.path.join(output_directory, "tags"), exist_ok=True)
@@ -86,7 +86,7 @@ for tag in tags:
 
     # Render the tag template using Jinja
     tag_page_content = tag_template.render(
-        tag=tag, links=tag_links, search_enabled=search_enabled
+        tag=tag, links=tag_links, search_enabled=search_enabled, tags=tags
     )
     tag_path = os.path.join(output_directory, "tags", tag)
     os.makedirs(tag_path, exist_ok=True)
