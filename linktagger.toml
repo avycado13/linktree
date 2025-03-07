@@ -7,3 +7,6 @@ url = "sqlite:///links.db"
 
 [search]
 enabled = true
+
+[ai]
+enabled = false
