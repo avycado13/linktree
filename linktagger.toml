@@ -9,4 +9,7 @@ url = "sqlite:///links.db"
 enabled = true
 
 [ai]
-enabled = false
+enabled = true
+url = "http://localhost:11434/v1"
+api_key = "ollama"
+model = "llama3.2"

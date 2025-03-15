@@ -4,6 +4,7 @@ from trogon import tui
 import httpx
 import prompts
 from openai import OpenAI
+import certifi
 
 # Load configuration
 config = loader.load_config()
@@ -29,12 +30,13 @@ def add_link(url, tags, ai):
         if config["ai"]["enabled"]:
             ai_client = OpenAI(
                 base_url=config["ai"]["url"],
-                api_key=config["ai"]["api_key"] | "ollama",  # required, but unused
+                api_key=config["ai"]["api_key"]
             )
-
-            text = httpx.get(url=url)
+            click.echo("finished initializing openai")
+            text = httpx.get(url=url, verify=certifi.where())
+            click.echo("finished fetching link content")
             response = ai_client.chat.completions.create(
-                model=config["ai"]["model"] | "o1",
+                model=config["ai"]["model"] if config["ai"]["model"] else "gpt-3.5-turbo",
                 messages=prompts.gen_tags_prompt(text.text),
             )
             tags += list(response.choices[0].message.content)
@@ -43,6 +45,11 @@ def add_link(url, tags, ai):
     db.insert_link_with_tags(url, list(tags))  # Convert tuple to list
     click.echo("Added link with tags!")
 
+
+@cli.command("remove")
+@click.argument("url")
+def remove(url):
+    db.remove_link(url)
 
 @cli.command("links")
 def get_links():
