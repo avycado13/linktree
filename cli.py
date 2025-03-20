@@ -3,7 +3,6 @@ import loader as loader
 from trogon import tui
 import httpx
 import prompts
-from openai import OpenAI
 import certifi
 
 # Load configuration
@@ -28,6 +27,10 @@ def add_link(url, tags, ai):
     tags = list(tags)
     if ai:
             if config["ai"]["enabled"]:
+                try:
+                    from openai import OpenAI
+                except ImportError:
+                    click.echo("Please install the ai addon to use the AI feature.")
                 ai_client = OpenAI(
                     base_url=config["ai"]["url"],
                     api_key=config["ai"]["api_key"]
@@ -101,6 +104,10 @@ def bulk_add_links(file_path: str, ai):
             tags = parts[1:]  # Remaining parts are tags
         if ai:
             if config["ai"]["enabled"]:
+                try:
+                    from openai import OpenAI
+                except ImportError:
+                    click.echo("Please install the ai addon to use the AI feature.")
                 ai_client = OpenAI(
                     base_url=config["ai"]["url"],
                     api_key=config["ai"]["api_key"]
