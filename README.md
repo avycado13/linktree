@@ -36,3 +36,9 @@ Run `make build` to build the files to your output dir
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+
+## TODOS
+
+[ ] Add sharing of certain links
+[ ] Add browser shortcut or something
